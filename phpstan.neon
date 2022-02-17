@@ -1,0 +1,10 @@
+includes:
+    - vendor/phpstan/phpstan-symfony/extension.neon
+
+parameters:
+    inferPrivatePropertyTypeFromConstructor: true
+    excludes_analyse:
+        - %currentWorkingDirectory%/src/Migrations/*
+        - %currentWorkingDirectory%/src/Admin/BookmarkAdmin.php
+    symfony:
+        container_xml_path: '%rootDir%/../../../var/cache/test/srcApp_KernelTestDebugContainer.xml'

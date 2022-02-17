@@ -1,0 +1,97 @@
+parameters:
+    locale: 'en'
+    security_secret: '%env(SECURITY_SECRET)%'
+    integration_api_key: '%env(INTEGRATION_API_KEY)%'
+    students_app_url: '%env(STUDENTS_APP_URL)%'
+    swp.resources: []
+
+services:
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            $securitySecret: '%security_secret%'
+            $integrationApiKey: '%integration_api_key%'
+            $cacheDir: '%kernel.cache_dir%'
+            $studentsAppUrl: '%students_app_url%'
+
+    App\:
+        resource: '../src/*'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Kernel.php}'
+
+    App\Controller\:
+        resource: '../src/Controller'
+        tags: ['controller.service_arguments']
+
+    app.uploader.storage:
+        alias: vich_uploader.storage
+        public: true
+
+    admin.course:
+        class: App\Admin\CourseAdmin
+        arguments: [~, App\Entity\Course, ~]
+        calls:
+            - ["setUploaderHelper", ['@Vich\UploaderBundle\Templating\Helper\UploaderHelper']]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: courses, label: Courses }
+
+    admin.author:
+        class: App\Admin\AuthorAdmin
+        arguments: [~, App\Entity\Author, ~]
+        calls:
+            - ["setUploaderHelper", ['@Vich\UploaderBundle\Templating\Helper\UploaderHelper']]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: courses, label: Authors }
+
+    admin.module:
+        class: App\Admin\ModuleAdmin
+        arguments: [~, App\Entity\Module,'PixSortableBehaviorBundle:SortableAdmin']
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: courses, label: Modules }
+
+    admin.lesson:
+        class: App\Admin\LessonAdmin
+        arguments: [ ~, App\Entity\Lesson,'PixSortableBehaviorBundle:SortableAdmin']
+        calls:
+            - ["setUploaderHelper", ['@Vich\UploaderBundle\Templating\Helper\UploaderHelper']]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: courses, label: Lessons }
+
+    admin.demo_lesson:
+        class: App\Admin\DemoLessonAdmin
+        arguments: [~, App\Entity\DemoLesson, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: courses, label: Demo Lesson }
+
+    admin.attachment:
+        class: App\Admin\AttachmentAdmin
+        arguments: [~, App\Entity\Attachment, ~]
+        calls:
+            - ["setUploaderHelper", ['@Vich\UploaderBundle\Templating\Helper\UploaderHelper']]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: courses, label: Attachments }
+
+    admin.user:
+        class: App\Admin\UserAdmin
+        arguments: [~, App\Entity\User, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: users, label: Users }
+        calls:
+            - ["setEncoder", ['@security.password_encoder']]
+        public: true
+
+    admin.bookmark:
+        class: App\Admin\BookmarkAdmin
+        arguments: [~, App\Entity\Bookmark, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: courses, label: Bookmarks }
+        public: true
+
+    admin.notification:
+        class: App\Admin\NotificationAdmin
+        arguments: [~, App\Entity\Notification, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: notifications, label: Notification }
+        public: true
+
+    SWP\Bundle\SettingsBundle\Manager\SettingsManagerInterface: "@swp_settings.manager.settings"

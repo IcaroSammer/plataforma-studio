@@ -1,0 +1,32 @@
+default:
+    suites:
+        default:
+            contexts:
+                - App\Tests\Behat\FeatureContext
+                - App\Tests\Behat\CourseContext
+                - App\Tests\Behat\LessonContext
+                - App\Tests\Behat\AttachmentContext
+                - App\Tests\Behat\BookmarkContext
+                - App\Tests\Behat\AuthorContext
+                - App\Tests\Behat\UserContext
+                - App\Tests\Behat\CommandContext
+                - App\Tests\Behat\NotificationContext
+                - Behatch\Context\JsonContext
+                - App\Tests\Behat\MailerContext
+                - App\Tests\Behat\RestJwtContext:
+                      jwtEncoder: "@lexik_jwt_authentication.encoder"
+                      securitySecret: "%%security_secret%%"
+                - Behat\MinkExtension\Context\MinkContext
+    extensions:
+        Behat\Symfony2Extension:
+            kernel:
+                bootstrap: 'vendor/autoload.php'
+                path: 'src/Kernel.php'
+                class: 'App\Kernel'
+        Behatch\Extension: ~
+        FriendsOfBehat\SymfonyExtension: ~
+        Behat\MinkExtension:
+            base_url:  'http://localhost'
+            sessions:
+                default:
+                    symfony: ~

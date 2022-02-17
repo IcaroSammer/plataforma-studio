@@ -1,0 +1,29 @@
+api_users_me:
+    path: /api/users/me
+    methods: GET
+    controller: App\Controller\ApiUsersController::getCurrentUser
+
+api_users_register:
+    path: /api/users/register
+    methods: POST
+    controller: App\Controller\ApiUsersController::registerOrUpdateUser
+
+api_integration_register:
+    path: /api/integration/users/register
+    methods: POST
+    controller: App\Controller\ApiUsersController::registerOrUpdateUser
+
+api_users_pasword_reset_request:
+    path: /api/users/password/reset_request
+    methods: POST
+    controller: App\Controller\ApiUsersController::requestPasswordReset
+
+api_users_pasword_reset:
+    path: /api/users/password/reset
+    methods: POST
+    controller: App\Controller\ApiUsersController::requestPassword
+
+api_users_check_email:
+    path: /api/users/check-email
+    methods: POST
+    controller: App\Controller\ApiUsersController::checkEmail

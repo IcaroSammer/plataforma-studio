@@ -1,0 +1,21 @@
+vich_uploader:
+    db_driver: orm
+    storage: flysystem
+    metadata:
+        auto_detection: false
+        directories:
+            - {path: '%kernel.project_dir%/config/vich_uploader', namespace_prefix: 'App\Entity'}
+    mappings:
+        covers:
+            uri_prefix: "https://s3.%env(AWS_S3_REGION)%.amazonaws.com/%env(AWS_S3_BUCKET)%/%env(AWS_S3_PREFIX)%/covers"
+            upload_destination: app.filesystem.covers
+            namer: vich_uploader.namer_base64
+        attachments:
+            uri_prefix: "https://s3.%env(AWS_S3_REGION)%.amazonaws.com/%env(AWS_S3_BUCKET)%/%env(AWS_S3_PREFIX)%/attachments"
+            upload_destination: app.filesystem.attachments
+            namer: vich_uploader.namer_origname
+        pictures:
+            uri_prefix: "https://s3.%env(AWS_S3_REGION)%.amazonaws.com/%env(AWS_S3_BUCKET)%/%env(AWS_S3_PREFIX)%/pictures"
+            upload_destination: app.filesystem.pictures
+            namer: vich_uploader.namer_origname
+

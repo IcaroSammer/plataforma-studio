@@ -1,0 +1,18 @@
+App\Entity\Notification:
+    attributes:
+        id:
+            groups: ['list']
+        title:
+            groups: ['list']
+        text:
+            groups: ['list']
+        label:
+            groups: ['list']
+        url:
+            groups: ['list']
+        urlTitle:
+            groups: ['list']
+        read:
+            groups: ['list']
+        created:
+            groups: ['list']

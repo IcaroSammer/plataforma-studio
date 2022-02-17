@@ -1,0 +1,63 @@
+App\Entity\Course:
+    type: entity
+    repositoryClass: App\Repository\CourseRepository
+    table: course
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        title:
+            type: string
+            length: 255
+        description:
+            type: string
+            length: 255
+            nullable: true
+        sku:
+            type: string
+            length: 255
+            nullable: true
+        coverImageName:
+            type: string
+            length: 255
+            nullable: true
+        created:
+            type: datetime
+            columnDefinition: TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+            gedmo:
+                timestampable:
+                    on: create
+        updated:
+            type: datetime
+            nullable: true
+            gedmo:
+                timestampable:
+                    on: update
+        visible:
+            type: boolean
+            nullable: true
+        startDate:
+            type: datetime
+            nullable: true
+        endDate:
+            type: datetime
+            nullable: true
+        type:
+            type: string
+            nullable: false
+            options:
+                default: standard
+        purchaseUrl:
+            type: string
+            nullable: true
+    manyToOne:
+        parent:
+            targetEntity: App\Entity\Course
+            joinColumn:
+                nullable: true
+    manyToMany:
+        authors:
+            targetEntity: App\Entity\Author
+            mappedBy: courses

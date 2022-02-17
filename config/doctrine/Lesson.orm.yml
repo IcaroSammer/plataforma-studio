@@ -1,0 +1,63 @@
+App\Entity\Lesson:
+    type: entity
+    repositoryClass: App\Repository\LessonRepository
+    table: npd_lesson
+    id:
+        id:
+            column: uuid
+            type: uuid
+            generator:
+                strategy: CUSTOM
+            customIdGenerator:
+                class: Ramsey\Uuid\Doctrine\UuidGenerator
+    fields:
+        title:
+            type: string
+            length: 255
+        description:
+            type: text
+        embedType:
+            type: string
+            length: 20
+            options:
+                default: "code"
+        embedCode:
+            type: text
+        created:
+            type: datetime
+            columnDefinition: TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+            gedmo:
+                timestampable:
+                    on: create
+        updated:
+            type: datetime
+            nullable: true
+            gedmo:
+                timestampable:
+                    on: update
+        position:
+            type: integer
+            gedmo:
+                - sortablePosition
+            options:
+                default: 0
+        coverImageName:
+            type: string
+            length: 255
+            nullable: true
+        durationInMinutes:
+            type: integer
+    manyToOne:
+        module:
+            targetEntity: App\Entity\Module
+            joinColumn:
+                referencedColumnName: uuid
+                name: module_id
+                nullable: false
+            gedmo:
+                - sortableGroup
+    oneToMany:
+        attachments:
+            targetEntity: App\Entity\Attachment
+            mappedBy: lesson
+            orderBy: { 'name': 'ASC' }
